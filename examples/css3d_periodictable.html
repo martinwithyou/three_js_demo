@@ -1,0 +1,414 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>three.js css3d - periodic table</title>
+		<meta charset="utf-8">
+		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
+		<style>
+			html, body {
+				height: 100%;
+			}
+
+			body {
+				background-color: #000000;
+				margin: 0;
+				font-family: Helvetica, sans-serif;;
+				overflow: hidden;
+			}
+
+			a {
+				color: #ffffff;
+			}
+
+			#info {
+				position: absolute;
+				width: 100%;
+				color: #ffffff;
+				padding: 5px;
+				font-family: Monospace;
+				font-size: 13px;
+				font-weight: bold;
+				text-align: center;
+				z-index: 1;
+			}
+
+			#menu {
+				position: absolute;
+				bottom: 20px;
+				width: 100%;
+				text-align: center;
+			}
+
+			.element {
+				width: 120px;
+				height: 160px;
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.5);
+				border: 1px solid rgba(127,255,255,0.25);
+				text-align: center;
+				cursor: pointer;
+			}
+
+			.element:hover {
+				box-shadow: 0px 0px 12px rgba(0,255,255,0.75);
+				border: 1px solid rgba(127,255,255,0.75);
+			}
+
+				.element .number {
+					width: 100% ;
+                    height:160px;
+					text-align: center;
+					line-height: 160px;
+					font-size: 100px;
+					color: rgba(255,255,255,1);
+				}
+
+				.element .symbol {
+					position: absolute;
+					top: 40px;
+					left: 0px;
+					right: 0px;
+					font-size: 60px;
+					font-weight: bold;
+					color: rgba(255,255,255,1);
+					/* text-shadow: 0 0 10px rgba(0,255,255,0.95); */
+				}
+
+				.element .details {
+					position: absolute;
+					bottom: 15px;
+					left: 0px;
+					right: 0px;
+					font-size: 12px;
+					color: rgba(255,255,255,1);
+				}
+
+			button {
+				color: rgba(127,255,255,0.75);
+				background: transparent;
+				outline: 1px solid rgba(127,255,255,0.75);
+				border: 0px;
+				padding: 5px 10px;
+				cursor: pointer;
+			}
+			button:hover {
+				background-color: rgba(0,255,255,0.5);
+			}
+			button:active {
+				color: #000000;
+				background-color: rgba(0,255,255,0.75);
+			}
+		</style>
+	</head>
+	<body>
+		<script src="../build/three.js"></script>
+		<script src="js/libs/tween.min.js"></script>
+		<script src="js/controls/TrackballControls.js"></script>
+		<script src="js/renderers/CSS3DRenderer.js"></script>
+
+    	<div id="container"></div>
+		<div id="menu">
+			<button id="table">TABLE</button>
+			<button id="sphere">SPHERE</button>
+			<button id="helix">HELIX</button>
+			<button id="grid">GRID</button>
+		</div>
+
+		<script>
+
+			var table = [
+				{id:1,name:"dezhu1"},
+				{id:2,name:"dezhu2"},
+				{id:3,name:"dezhu3"},
+				{id:4,name:"dezhu1"},
+				{id:5,name:"dezhu2"},
+				{id:6,name:"dezhu3"},
+				{id:7,name:"dezhu1"},
+				{id:8,name:"dezhu2"},
+				{id:9,name:"dezhu3"},
+				{id:10,name:"dezhu1"},
+				{id:11,name:"dezhu2"},
+				{id:12,name:"dezhu3"},
+				{id:13,name:"dezhu1"},
+				{id:14,name:"dezhu2"},
+				{id:15,name:"dezhu3"},
+				{id:16,name:"dezhu3"},
+				{id:17,name:"dezhu1"},
+				{id:18,name:"dezhu2"},
+				{id:19,name:"dezhu3"},
+				{id:20,name:"dezhu1"},
+				{id:21,name:"dezhu1"},
+				{id:22,name:"dezhu2"},
+				{id:23,name:"dezhu3"},
+				{id:24,name:"dezhu1"},
+				{id:25,name:"dezhu2"},
+				{id:26,name:"dezhu3"},
+				{id:27,name:"dezhu1"},
+				{id:28,name:"dezhu2"},
+				{id:29,name:"dezhu3"},
+				{id:30,name:"dezhu1"},
+				{id:31,name:"dezhu1"},
+				{id:32,name:"dezhu2"},
+				{id:33,name:"dezhu3"},
+				{id:34,name:"dezhu1"},
+				{id:35,name:"dezhu2"},
+				{id:36,name:"dezhu3"},
+				{id:37,name:"dezhu1"},
+				{id:38,name:"dezhu2"},
+				{id:39,name:"dezhu3"},
+				{id:40,name:"dezhu1"},
+				{id:41,name:"dezhu1"},
+				{id:42,name:"dezhu2"},
+				{id:43,name:"dezhu3"},
+				{id:44,name:"dezhu1"},
+				{id:45,name:"dezhu2"},
+				{id:46,name:"dezhu3"},
+				{id:47,name:"dezhu1"},
+				{id:48,name:"dezhu2"},
+				{id:49,name:"dezhu3"},
+				{id:50,name:"dezhu1"},
+				{id:51,name:"dezhu2"},
+				{id:52,name:"dezhu3"},
+				{id:53,name:"dezhu1"},
+				{id:54,name:"dezhu2"},
+				{id:55,name:"dezhu3"},
+				{id:56,name:"dezhu3"},
+				{id:57,name:"dezhu1"},
+				{id:58,name:"dezhu2"},
+				{id:59,name:"dezhu3"},
+				{id:60,name:"dezhu1"},
+				{id:61,name:"dezhu1"},
+				{id:62,name:"dezhu2"},
+				{id:63,name:"dezhu3"},
+				{id:64,name:"dezhu1"},
+				{id:65,name:"dezhu2"},
+				{id:66,name:"dezhu3"},
+				{id:67,name:"dezhu1"},
+				{id:68,name:"dezhu2"},
+				{id:69,name:"dezhu3"},
+				{id:70,name:"dezhu1"},
+				{id:71,name:"dezhu1"},
+				{id:72,name:"dezhu2"},
+				{id:73,name:"dezhu3"},
+				{id:74,name:"dezhu1"},
+				{id:75,name:"dezhu2"},
+				{id:76,name:"dezhu3"},
+				{id:77,name:"dezhu1"},
+				{id:78,name:"dezhu2"},
+				{id:79,name:"dezhu3"},
+				{id:80,name:"dezhu1"}
+			];
+
+			var camera, scene, renderer;
+			var controls;
+
+			var objects = [];
+			var targets = { table: [], sphere: [], helix: [], grid: [] };
+
+			init();
+			animate();
+
+			function init() {
+
+				camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
+				camera.position.z = 3000;
+
+				scene = new THREE.Scene();
+
+				// table
+
+				for ( var i = 0; i < table.length; i++ ) {
+
+					var element = document.createElement( 'div' );
+					element.className = 'element';
+					element.style.backgroundColor = 'rgba(0,153,0,' + ( 0.5 + 0.5 ) + ')';
+
+					var number = document.createElement( 'div' );
+					number.className = 'number';
+					number.textContent = table[i].id;
+					element.appendChild( number );
+
+
+
+					var object = new THREE.CSS3DObject( element );
+					object.position.x = Math.random() * 4000 - 2000;
+					object.position.y = Math.random() * 4000 - 2000;
+					object.position.z = Math.random() * 4000 - 2000;
+					scene.add( object );
+
+					objects.push( object );
+
+					//
+
+					var object = new THREE.Object3D();
+					object.position.x = ( table[ i + 3 ] * 140 ) - 1330;
+					object.position.y = - ( table[ i + 4 ] * 180 ) + 990;
+
+					targets.table.push( object );
+
+				}
+
+				// sphere
+
+				var vector = new THREE.Vector3();
+
+				for ( var i = 0, l = objects.length; i < l; i ++ ) {
+
+					var phi = Math.acos( - 1 + ( 2 * i ) / l );
+					var theta = Math.sqrt( l * Math.PI ) * phi;
+
+					var object = new THREE.Object3D();
+
+					object.position.setFromSphericalCoords( 2000, phi, theta );
+
+					vector.copy( object.position ).multiplyScalar( 2 );
+
+					object.lookAt( vector );
+
+					targets.sphere.push( object );
+
+				}
+
+				// helix
+
+				var vector = new THREE.Vector3();
+
+				for ( var i = 0, l = objects.length; i < l; i ++ ) {
+
+					var theta = i * 0.175 + Math.PI;
+					var y = - ( i * 20 ) + 750;
+
+					var object = new THREE.Object3D();
+
+					object.position.setFromCylindricalCoords( 900, theta, y );
+
+					vector.x = object.position.x * 2;
+					vector.y = object.position.y;
+					vector.z = object.position.z * 2;
+
+					object.lookAt( vector );
+
+					targets.helix.push( object );
+
+				}
+
+				// grid
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = new THREE.Object3D();
+
+					object.position.x = ( ( i % 5 ) * 400 ) - 800;
+					object.position.y = ( - ( Math.floor( i / 5 ) % 5 ) * 400 ) + 800;
+					object.position.z = ( Math.floor( i / 25 ) ) * 1000 - 2000;
+
+					targets.grid.push( object );
+
+				}
+
+				//
+
+				renderer = new THREE.CSS3DRenderer();
+				renderer.setSize( window.innerWidth, window.innerHeight );
+				document.getElementById( 'container' ).appendChild( renderer.domElement );
+
+				//
+
+				controls = new THREE.TrackballControls( camera, renderer.domElement );
+				controls.rotateSpeed = 0.5;
+				controls.minDistance = 500;
+				controls.maxDistance = 6000;
+				controls.addEventListener( 'change', render );
+
+				var button = document.getElementById( 'table' );
+				button.addEventListener( 'click', function () {
+					transform( targets.table, 1000 );
+				}, false );
+
+				var button = document.getElementById( 'sphere' );
+				button.addEventListener( 'click', function () {
+					transform( targets.sphere, 1000 );
+				}, false );
+
+				var button = document.getElementById( 'helix' );
+				button.addEventListener( 'click', function () {
+					transform( targets.helix, 3000 );
+				}, false );
+
+				var button = document.getElementById( 'grid' );
+				button.addEventListener( 'click', function () {
+					transform( targets.grid, 1000 );
+				}, false );
+
+				transform( targets.sphere, 2000 );
+				//
+
+				window.addEventListener( 'resize', onWindowResize, false );
+
+			}
+
+			function transform( targets, duration ) {
+
+				TWEEN.removeAll();
+
+				for ( var i = 0; i < objects.length; i ++ ) {
+
+					var object = objects[ i ];
+					    objects[ i ].rotation.y += 1800;
+					    //objects[ i ].rotation.x += 1800;
+					    //objects[ i ].rotation.z += 1800;
+
+					var target = targets[ i ];
+					    //targets[ i ].rotation.y += 1890;
+						//targets[ i ].rotation.x += 90;
+						//targets[ i ].rotation.z += 90;
+
+
+					new TWEEN.Tween( object.position )
+						.to( { x: target.position.x, y: target.position.y, z: target.position.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+					new TWEEN.Tween( object.rotation )
+						.to( { x: target.rotation.x, y: target.rotation.y, z: target.rotation.z }, Math.random() * duration + duration )
+						.easing( TWEEN.Easing.Exponential.InOut )
+						.start();
+
+				}
+
+				new TWEEN.Tween( this )
+					.to( {}, duration * 2 )
+					.onUpdate( render )
+					.start();
+
+			}
+
+			function onWindowResize() {
+
+				camera.aspect = window.innerWidth / window.innerHeight;
+				camera.updateProjectionMatrix();
+
+				renderer.setSize( window.innerWidth, window.innerHeight );
+
+				render();
+
+			}
+
+			function animate() {
+
+				requestAnimationFrame( animate );
+
+				TWEEN.update();
+
+				controls.update();
+
+			}
+
+			function render() {
+
+				renderer.render( scene, camera );
+
+			}
+
+		</script>
+	</body>
+</html>
